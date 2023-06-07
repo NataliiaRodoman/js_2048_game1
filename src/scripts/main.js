@@ -7,8 +7,12 @@ const messageWin = document.querySelector('.message-win');
 const messageOver = document.querySelector('.message-over');
 const rows = 4;
 const columns = 4;
+let flag = 0;
+let flagSetRandom = true;
 let score = 0;
 let gammeBoard = [];
+let copyBoard = [];
+let arrayEqual = false;
 
 buttonStart.addEventListener('click', () => {
   buttonStart.classList.value = '';
@@ -17,6 +21,8 @@ buttonStart.addEventListener('click', () => {
   messageStart.classList.add('hidden');
   messageOver.classList.add('hidden');
   document.querySelector('.game-score').innerText = 0;
+  score = 0;
+  flagSetRandom = true;
   setGame();
 });
 
@@ -76,7 +82,7 @@ function moves() {
 }
 
 function setRandomInEmptyCell() {
-  if (!emptyTile()) {
+  if (!emptyTile() || !flagSetRandom) {
     return;
   }
 
@@ -120,30 +126,97 @@ function updateTile(tile, num) {
 document.addEventListener('keyup', (e) => {
   switch (e.code) {
     case 'ArrowLeft':
+      flag = score;
+
+      copyBoard = gammeBoard.map(row => row.slice());
+
       slideLeft();
+
+      arrayEqual = gammeBoard.every((row, rowIndex) =>
+        row.every(
+          (value, columnIndex) => value === copyBoard[rowIndex][columnIndex]
+        ));
+
+      if ((arrayEqual) && (flag === score)) {
+        setRandomInEmptyCell();
+        flagSetRandom = false;
+      } else {
+        flagSetRandom = true;
+      }
+
       setRandomInEmptyCell();
+
       moves();
 
       break;
 
     case 'ArrowRight':
-      // flagEnd = score;
+      flag = score;
+
+      copyBoard = gammeBoard.map(row => row.slice());
+
       slideRight();
+
+      arrayEqual = gammeBoard.every((row, rowIndex) =>
+        row.every(
+          (value, columnIndex) => value === copyBoard[rowIndex][columnIndex]
+        ));
+
+      if ((arrayEqual) && (flag === score)) {
+        setRandomInEmptyCell();
+        flagSetRandom = false;
+      } else {
+        flagSetRandom = true;
+      }
+
       setRandomInEmptyCell();
+
       moves();
 
       break;
 
     case 'ArrowUp':
+      flag = score;
       slideUp();
+
+      copyBoard = gammeBoard.map(row => row.slice());
+
       setRandomInEmptyCell();
+
+      arrayEqual = gammeBoard.every((row, rowIndex) =>
+        row.every(
+          (value, columnIndex) => value === copyBoard[rowIndex][columnIndex]
+        ));
+
+      if ((arrayEqual) && (flag === score)) {
+        setRandomInEmptyCell();
+        flagSetRandom = false;
+      } else {
+        flagSetRandom = true;
+      }
+
       moves();
 
       break;
 
     case 'ArrowDown':
+      flag = score;
+      copyBoard = gammeBoard.map(row => row.slice());
       slideDown();
+
+      arrayEqual = gammeBoard.every((row, rowIndex) =>
+        row.every(
+          (value, columnIndex) => value === copyBoard[rowIndex][columnIndex]
+        ));
+
+      if ((arrayEqual) && (flag === score)) {
+        setRandomInEmptyCell();
+        flagSetRandom = false;
+      } else {
+        flagSetRandom = true;
+      }
       setRandomInEmptyCell();
+
       moves();
 
       break;
