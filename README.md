@@ -1,4 +1,4 @@
-# **2048 Game –  written in pure JavaScript.*
+# **2048 Game –  written in pure JavaScript.**
 
 The following methods were used:
   - HTML;
